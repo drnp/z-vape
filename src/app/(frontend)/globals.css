@@ -1,0 +1,136 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-bg: #000019;
+  --color-bg-warm: #000019;
+  --color-bg-surface: #000019;
+  --color-bg-elevated: #000019;
+  --color-bg-card: #000019;
+
+  --color-gold: #daa34a;
+  --color-gold-light: #d4b87a;
+  --color-gold-dark: #b0905a;
+  --color-gold-muted: rgba(200, 169, 110, 0.15);
+
+  --color-text-primary: #f0ece4;
+  --color-text-secondary: #9a9590;
+  --color-text-muted: #5c5854;
+  --color-text-gray: #9b9b9b;
+  --color-text-gold: #daa34a;
+
+  --color-border: #1e1c19;
+  --color-border-subtle: #161412;
+
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+    transition: color 0.3s ease, opacity 0.3s ease;
+  }
+
+  a:hover {
+    opacity: 1;
+  }
+
+  button {
+    cursor: pointer;
+    border: none;
+    background: none;
+    font: inherit;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.02em;
+  }
+}
+
+/* Container — matches front.png max content width */
+.section-padding {
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (min-width: 768px) {
+  .section-padding {
+    padding-left: 48px;
+    padding-right: 48px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .section-padding {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
+}
+
+/* Full-bleed section (edge to edge) */
+.full-bleed {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+}
+
+/* Gold accent line */
+.gold-line {
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: var(--color-gold);
+  border: none;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}

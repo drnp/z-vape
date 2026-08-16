@@ -1,0 +1,110 @@
+@layer payload-default {
+  /* --- Base color ramp overrides (dark theme) --- */
+  /* Frontend bg: #000019 */
+  :root {
+    --color-base-950: #000013;
+    --color-base-900: #000019;
+    --color-base-850: #05051e;
+    --color-base-800: #0d0d28;
+    --color-base-750: #161635;
+    --color-base-700: #212144;
+    --color-base-650: #2e2e54;
+    --color-base-600: #3c3c64;
+    --color-base-550: #4c4c74;
+    --color-base-500: #5e5e84;
+    --color-base-450: #717194;
+    --color-base-400: #8585a5;
+    --color-base-350: #9999b6;
+    --color-base-300: #aeaec7;
+    --color-base-250: #c2c2d8;
+    --color-base-200: #d7d7e9;
+    --color-base-150: #ebebf5;
+    --color-base-100: #f9f9ff;
+
+    /* --- Accent: gold (#daa34a) --- */
+    --color-base-brand-950: #daa34a;
+    --color-base-brand-900: #daa34a;
+    --color-base-brand-850: #daa34a;
+    --color-base-brand-800: #daa34a;
+    --color-base-brand-750: #daa34a;
+    --color-base-brand-700: #daa34a;
+    --color-base-brand-650: #daa34a;
+    --color-base-brand-600: #daa34a;
+    --color-base-brand-550: #daa34a;
+    --color-base-brand-500: #daa34a;
+    --color-base-brand-450: #d4b87a;
+    --color-base-brand-400: #d4b87a;
+    --color-base-brand-350: #d4b87a;
+    --color-base-brand-300: #d4b87a;
+    --color-base-brand-250: #d4b87a;
+    --color-base-brand-200: #d4b87a;
+    --color-base-brand-150: #d4b87a;
+    --color-base-brand-100: #d4b87a;
+    --color-base-brand-50: #d4b87a;
+    --color-base-brand-0: #daa34a;
+
+    /* --- Success: muted gold-green --- */
+    --color-base-success-900: #8b9a6e;
+    --color-base-success-800: #8b9a6e;
+    --color-base-success-700: #8b9a6e;
+    --color-base-success-600: #8b9a6e;
+    --color-base-success-500: #8b9a6e;
+    --color-base-success-400: #b0be95;
+    --color-base-success-300: #b0be95;
+    --color-base-success-200: #b0be95;
+    --color-base-success-100: #b0be95;
+    --color-base-success-50: #b0be95;
+    --color-base-success-0: #8b9a6e;
+
+    /* --- Error: warm red --- */
+    --color-base-error-900: #c85555;
+    --color-base-error-800: #c85555;
+    --color-base-error-700: #c85555;
+    --color-base-error-600: #c85555;
+    --color-base-error-500: #c85555;
+    --color-base-error-400: #e08080;
+    --color-base-error-300: #e08080;
+    --color-base-error-200: #e08080;
+    --color-base-error-100: #e08080;
+    --color-base-error-50: #e08080;
+    --color-base-error-0: #c85555;
+  }
+
+  /* --- Typography: larger base scale --- */
+  /* Payload v3 compiles font sizes to hardcoded px values, so we override */
+  /* html/body/headings directly, and use !important to beat the compiled CSS */
+
+  html {
+    font-size: 18px; /* up from 13px — scales all rem-based text + spacing */
+  }
+
+  body {
+    font-size: 17px; /* up from 12px */
+  }
+
+  h1 { font-size: 40px; }  /* up from 32px */
+  h2 { font-size: 34px; }  /* up from 26px */
+  h3 { font-size: 28px; }  /* up from 20px */
+  h4 { font-size: 22px; }  /* up from 16px */
+  h5 { font-size: 18px; }  /* up from 13px */
+  h6 { font-size: 16px; }  /* up from 12px */
+
+  /* --- Logo sizing in header breadcrumb --- */
+  .step-nav__home {
+    width: auto !important;
+    height: auto !important;
+    min-width: unset !important;
+    min-height: unset !important;
+  }
+  .step-nav__home img {
+    display: block;
+    height: 40px;
+    width: auto;
+  }
+
+  /* --- Right-side content background: deep blue #03246b --- */
+  .template-default__wrap {
+    --theme-bg: hsl(221, 94%, 13%);
+    background: hsl(221, 94%, 13%);
+  }
+}
