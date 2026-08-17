@@ -17,6 +17,8 @@ function getImageUrl(product: { images?: { image?: string | { url?: string | nul
   return null
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function CheckoutPage({ searchParams }: PageProps) {
   const sp = await searchParams
   const user = await getCurrentUser()

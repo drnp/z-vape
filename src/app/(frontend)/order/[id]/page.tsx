@@ -32,6 +32,8 @@ function productName(order: Order, itemIndex: number): string {
   return 'Product'
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function OrderPage({ params }: PageProps) {
   const { id } = await params
   const user = await getCurrentUser()

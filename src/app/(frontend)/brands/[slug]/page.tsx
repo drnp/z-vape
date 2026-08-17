@@ -38,6 +38,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function BrandPage({ params }: PageProps) {
   const { slug } = await params
   const payload = await getPayload({ config })

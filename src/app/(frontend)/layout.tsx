@@ -9,6 +9,8 @@ import { CartProvider } from './components/CartContext'
 import { getCurrentUser } from '@/lib/auth'
 import './globals.css'
 
+export const dynamic = 'force-dynamic'
+
 const inter = Inter({
   subsets: ['latin'],
   variable: '--font-body',

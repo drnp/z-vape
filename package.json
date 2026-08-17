@@ -57,19 +57,5 @@
     "node": "^18.20.2 || >=20.9.0",
     "pnpm": "^9 || ^10 || ^11"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "esbuild",
-      "unrs-resolver"
-    ]
-  },
-  "allowScripts": {
-    "esbuild@0.18.20": true,
-    "esbuild@0.25.12": true,
-    "esbuild@0.28.2": true,
-    "sharp@0.34.5": true,
-    "sharp@0.34.2": true,
-    "unrs-resolver@1.12.2": true
-  }
+  "packageManager": "pnpm@11.3.0"
 }

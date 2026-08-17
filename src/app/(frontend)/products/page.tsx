@@ -17,6 +17,8 @@ export const metadata: Metadata = {
   description: 'Browse our full collection of premium vape products.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default async function ProductsPage({ searchParams }: PageProps) {
   const { brand: brandSlug } = await searchParams
   const payload = await getPayload({ config })
