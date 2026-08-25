@@ -49,12 +49,12 @@ export default async function ProductsPage({ searchParams }: PageProps) {
 
   return (
     <>
-      <nav className="section-padding pt-6 pb-2 flex items-center gap-2 text-xs text-text-muted">
+      <nav className="section-padding pt-6 pb-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
         <Link href="/" className="hover:text-gold transition-colors">
           Home
         </Link>
         <ChevronRight size={12} />
-        <span className="text-text-primary">{brand ? brand.name : 'Products'}</span>
+        <span className="text-text-primary truncate min-w-0">{brand ? brand.name : 'Products'}</span>
       </nav>
 
       <section className="section-padding pb-8 lg:pb-16">

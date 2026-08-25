@@ -66,7 +66,7 @@ export default async function ProductPage({ params }: PageProps) {
 
   return (
     <>
-      <nav className="section-padding pt-6 pb-2 flex items-center gap-2 text-xs text-text-muted">
+      <nav className="section-padding pt-6 pb-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
         <Link href="/" className="hover:text-gold transition-colors">
           Home
         </Link>
@@ -86,15 +86,15 @@ export default async function ProductPage({ params }: PageProps) {
           </>
         )}
         <ChevronRight size={12} />
-        <span className="text-text-primary">{product.name}</span>
+        <span className="text-text-primary truncate min-w-0">{product.name}</span>
       </nav>
 
-      <div className="section-padding pb-8 lg:pb-16">
+      <div className="section-padding pb-32 lg:pb-16">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           <ProductGallery product={product} />
           <div className="flex flex-col gap-6">
             <ProductInfo product={product} />
-            <div className="border-t border-border pt-6">
+            <div className="hidden lg:block border-t border-border pt-6">
               <AddToCart product={product} />
             </div>
           </div>

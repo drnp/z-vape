@@ -17,7 +17,7 @@ export function Footer() {
           />
         </Link>
 
-        <nav className="flex items-center gap-4 md:gap-6 text-gold text-xs md:text-sm tracking-wider uppercase">
+        <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:gap-x-6 md:gap-y-0 text-gold text-xs md:text-sm tracking-wider uppercase">
           <Link href="/">Home</Link>
           <Link href="/brands/alibarbar">Alibarbar</Link>
           <Link href="/brands/iget">iGet</Link>
@@ -27,7 +27,7 @@ export function Footer() {
           <Link href="/contact">Contact</Link>
         </nav>
 
-        <div className="flex items-center gap-4 md:gap-6 text-text-muted text-xs md:text-sm">
+        <div className="flex flex-col items-center gap-2 md:flex-row md:items-center md:gap-6 text-text-muted text-xs md:text-sm">
           <span>(+52)09-1234-5678</span>
           <a href="mailto:sales@z-vape.com">sales@z-vape.com</a>
           <a href="mailto:support@z-vape.com">support@z-vape.com</a>

@@ -29,16 +29,18 @@ const socialIcons = [
 export function IconBlanks() {
   return (
     <>
-      <div className="section-padding xl:px-10! h-100 flex items-center justify-center">
+      <div className="section-padding xl:px-10! h-auto md:h-100 flex items-center justify-center py-10 md:py-0">
         {/* Layer 1 */}
-        <div className="flex justify-center gap-20 md:gap-32">
+        <div className="w-full grid grid-cols-2 gap-x-6 gap-y-10 md:flex md:justify-center md:gap-20 md:gap-32">
           {iconRow1.map(({ src, label }) => (
-            <div key={label} className="w-40 flex flex-col items-center gap-3">
-              <div className="w-full h-40 flex items-center justify-center">
+            <div key={label} className="flex flex-col items-center gap-3">
+              <div className="w-full md:w-40 h-24 md:h-40 flex items-center justify-center">
                 <img src={src} alt={label} className="max-h-full max-w-full object-contain" />
               </div>
-              <div className="h-8 flex items-center">
-                <span className="text-gold text-xl font-medium whitespace-nowrap">{label}</span>
+              <div className="min-h-8 flex items-center">
+                <span className="text-gold text-sm md:text-xl font-medium text-center md:whitespace-nowrap">
+                  {label}
+                </span>
               </div>
             </div>
           ))}
@@ -49,7 +51,7 @@ export function IconBlanks() {
 
       <div className="section-padding xl:px-10! h-30 flex items-center justify-center">
         {/* Layer 2 */}
-        <div className="flex justify-center gap-20 md:gap-32">
+        <div className="flex justify-center gap-6 md:gap-20 md:gap-32">
           {socialIcons.map(({ label, path }) => (
             <div
               key={label}

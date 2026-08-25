@@ -72,12 +72,12 @@ export default async function OrderPage({ params }: PageProps) {
 
   return (
     <div className="section-padding py-10 md:py-16">
-      <nav className="flex items-center gap-2 text-xs text-text-muted mb-6">
+      <nav className="flex flex-wrap items-center gap-2 text-xs text-text-muted mb-6">
         <Link href="/" className="hover:text-gold transition-colors">
           Home
         </Link>
         <ChevronRight size={12} />
-        <span className="text-text-primary">Order Confirmation</span>
+        <span className="text-text-primary truncate min-w-0">Order Confirmation</span>
       </nav>
 
       <div className="max-w-2xl mx-auto">

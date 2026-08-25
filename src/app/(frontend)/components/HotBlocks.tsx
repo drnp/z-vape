@@ -65,12 +65,15 @@ function HotProductCard({ product }: { product: Product }) {
       <div style={{ height: 30 }} />
       <div className="px-2 pb-2 md:px-3 md:pb-3 justify-center items-center flex flex-col">
         <p className="text-gold text-xl font-semibold h-8">${product.price.toFixed(2)}</p>
-        <Link href={`/products/${product.slug}`} className="text-gold text-lg h-8 hover:text-gold-light transition-colors">
+        <Link
+          href={`/products/${product.slug}`}
+          className="text-gold text-base md:text-lg text-center leading-snug line-clamp-2 min-h-8 hover:text-gold-light transition-colors"
+        >
           {product.name}
         </Link>
-        <p className="text-white text-sm mt-0.5 h-8">{product.flavour ?? ''}</p>
-        <div className="flex items-center gap-2 mt-2 h-10">
-          <div className="flex items-center border border-gold rounded-full">
+        <p className="text-white text-sm mt-0.5 min-h-8">{product.flavour ?? ''}</p>
+        <div className="flex items-center gap-1.5 md:gap-2 mt-2 w-full h-10">
+          <div className="flex items-center border border-gold rounded-full flex-shrink-0">
             <button
               onClick={() => setCount((c) => Math.max(1, c - 1))}
               className="w-6 h-6 flex items-center justify-center text-gold text-sm hover:opacity-70 transition-opacity"
@@ -87,8 +90,8 @@ function HotProductCard({ product }: { product: Product }) {
           </div>
           <button
             onClick={handleAddToCart}
-            className="ml-auto text-white text-xs font-semibold px-4 py-1.5 rounded-full hover:opacity-80 transition-opacity"
-            style={{ background: added ? '#16a34a' : '#daa34a', padding: '2px 8px' }}
+            className="ml-auto flex-1 min-w-0 text-white text-[10px] md:text-xs font-semibold px-3 md:px-4 py-1.5 rounded-full hover:opacity-80 transition-opacity truncate"
+            style={{ background: added ? '#16a34a' : '#daa34a' }}
           >
             {added ? 'Added' : 'Add to Cart'}
           </button>

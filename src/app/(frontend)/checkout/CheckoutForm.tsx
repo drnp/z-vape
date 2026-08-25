@@ -117,20 +117,20 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
 
   return (
     <div className="section-padding py-8 md:py-12">
-      <nav className="flex items-center gap-2 text-xs text-text-muted mb-6">
+      <nav className="flex flex-wrap items-center gap-2 text-xs text-text-muted mb-6">
         <Link href="/" className="hover:text-gold transition-colors">
           Home
         </Link>
         <ChevronRight size={12} />
         {buyNowItem ? (
-          <span className="text-text-primary">Checkout</span>
+          <span className="text-text-primary truncate min-w-0">Checkout</span>
         ) : (
           <>
             <Link href="/cart" className="hover:text-gold transition-colors">
               Cart
             </Link>
             <ChevronRight size={12} />
-            <span className="text-text-primary">Checkout</span>
+            <span className="text-text-primary truncate min-w-0">Checkout</span>
           </>
         )}
       </nav>

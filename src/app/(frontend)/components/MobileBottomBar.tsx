@@ -52,8 +52,11 @@ export function MobileBottomBar({ product }: MobileBottomBarProps) {
   }
 
   return (
-    <div className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-bg-surface border-t border-border px-4 py-3">
-      <div className="flex items-center gap-3">
+    <div
+      className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-bg-surface border-t border-border px-4 pt-3"
+      style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}
+    >
+      <div className="flex items-center gap-2 md:gap-3">
         <div className="flex items-center border border-border rounded-sm flex-shrink-0">
           <button
             onClick={decrement}
@@ -76,14 +79,14 @@ export function MobileBottomBar({ product }: MobileBottomBarProps) {
           </button>
         </div>
 
-        <span className="text-gold font-semibold text-sm flex-shrink-0">
+        <span className="text-gold font-semibold text-xs md:text-sm flex-shrink-0">
           ${(product.price * quantity).toFixed(2)}
         </span>
 
         <button
           onClick={handleAddToCart}
           disabled={!inStock}
-          className={`inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-full text-xs font-semibold tracking-[0.05em] uppercase transition-opacity duration-300 text-white ${
+          className={`flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-2 md:px-4 py-3 rounded-full text-[10px] md:text-xs font-semibold tracking-[0.05em] uppercase transition-opacity duration-300 text-white ${
             added
               ? ''
               : inStock
@@ -114,7 +117,7 @@ export function MobileBottomBar({ product }: MobileBottomBarProps) {
         <button
           onClick={handleBuyNow}
           disabled={!inStock}
-          className={`inline-flex items-center justify-center gap-1.5 px-4 py-3 rounded-full text-xs font-semibold tracking-[0.05em] uppercase transition-opacity duration-300 text-white ${
+          className={`flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-2 md:px-4 py-3 rounded-full text-[10px] md:text-xs font-semibold tracking-[0.05em] uppercase transition-opacity duration-300 text-white ${
             inStock
               ? 'active:opacity-80'
               : 'text-text-muted border border-border'

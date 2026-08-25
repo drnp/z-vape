@@ -60,13 +60,13 @@ export function Header({ user }: { user: { name: string } | null }) {
     <>
       <header className="sticky top-0 left-0 right-0 z-50 bg-bg/80 backdrop-blur-xl">
         {showBanner && (
-          <div className="section-padding relative flex items-center justify-center h-10 bg-gold">
-            <span className="text-sm font-bold text-black tracking-wide">
+          <div className="section-padding relative flex items-center justify-center h-auto min-h-10 bg-gold py-2 md:h-10 md:py-0">
+            <span className="text-[10px] md:text-sm font-bold text-black tracking-wide text-center px-8 md:px-0 leading-snug">
               SIGN UP TO BE A MEMBER, ENJOY 10% DISCOUNT ON YOUR FIRST PURCHASE
             </span>
             <button
               onClick={() => setShowBanner(false)}
-              className="absolute right-5 transition-colors shrink-0 text-black"
+              className="absolute right-3 md:right-5 transition-colors shrink-0 text-black"
               aria-label="Close banner"
             >
               <X size={14} />

@@ -70,7 +70,7 @@ export default async function BrandPage({ params }: PageProps) {
 
   return (
     <>
-      <nav className="section-padding pt-6 pb-2 flex items-center gap-2 text-xs text-text-muted">
+      <nav className="section-padding pt-6 pb-2 flex flex-wrap items-center gap-2 text-xs text-text-muted">
         <Link href="/" className="hover:text-gold transition-colors">
           Home
         </Link>
@@ -79,7 +79,7 @@ export default async function BrandPage({ params }: PageProps) {
           Brands
         </Link>
         <ChevronRight size={12} />
-        <span className="text-text-primary">{brand.name}</span>
+        <span className="text-text-primary truncate min-w-0">{brand.name}</span>
       </nav>
 
       <section className="section-padding pb-8 lg:pb-16">
