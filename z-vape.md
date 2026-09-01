@@ -1,4 +1,6 @@
-# Z-VAPE — E-Commerce Implementation Plan
+> **Deprecated** — 本文档为早期实现规划稿，已归档。正式文档见 `docs/prd.md`（产品）与 `docs/code.md`（技术），`AGENTS.md` 为协作规范。
+
+# [Deprecated] Z-VAPE — E-Commerce Implementation Plan
 
 Premium vape e-commerce site for the Australian market.  
 Domain: z-vape.com

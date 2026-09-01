@@ -1,14 +1,10 @@
 import React from 'react'
 import Link from 'next/link'
 import type { Product } from '@/payload-types'
+import { getProductImageUrl } from '@/lib/media'
 
 export function ProductCard({ product }: { product: Product }) {
-  const imageUrl =
-    product.images?.[0]?.image &&
-    typeof product.images[0].image === 'object' &&
-    'url' in product.images[0].image
-      ? product.images[0].image.url
-      : null
+  const imageUrl = getProductImageUrl(product, 'card')
 
   const brandName =
     product.brand && typeof product.brand === 'object' && 'name' in product.brand

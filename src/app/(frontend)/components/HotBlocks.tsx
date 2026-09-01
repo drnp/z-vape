@@ -3,6 +3,7 @@
 import React, { useState } from 'react'
 import Link from 'next/link'
 import type { Product } from '@/payload-types'
+import { getProductImageUrl } from '@/lib/media'
 import { useCart } from './CartContext'
 
 export interface BrandGroup {
@@ -27,12 +28,7 @@ function HotProductCard({ product }: { product: Product }) {
   const [added, setAdded] = useState(false)
   const { addItem } = useCart()
 
-  const imageUrl =
-    product.images?.[0]?.image &&
-    typeof product.images[0].image === 'object' &&
-    'url' in product.images[0].image
-      ? product.images[0].image.url!
-      : null
+  const imageUrl = getProductImageUrl(product, 'card')
 
   const handleAddToCart = () => {
     addItem(

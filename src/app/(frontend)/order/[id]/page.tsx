@@ -5,6 +5,7 @@ import { CheckCircle2, ChevronRight, ShoppingBag } from 'lucide-react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getCurrentUser } from '@/lib/auth'
+import { getMediaUrl } from '@/lib/media'
 import type { Order } from '@/payload-types'
 
 interface PageProps {
@@ -15,10 +16,8 @@ function productImageUrl(order: Order, itemIndex: number): string | null {
   const item = order.items?.[itemIndex]
   const product = item?.product
   if (product && typeof product === 'object') {
-    const first = product.images?.[0]?.image
-    if (first && typeof first === 'object' && 'url' in first) {
-      return first.url ?? null
-    }
+    const first = (product as { images?: { image?: unknown }[] }).images?.[0]?.image
+    return getMediaUrl(first as never, 'thumbnail')
   }
   return null
 }

@@ -4,18 +4,11 @@ import React, { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Minus, Plus, ShoppingBag, Check, Zap } from 'lucide-react'
 import type { Product } from '@/payload-types'
+import { getProductImageUrl } from '@/lib/media'
 import { useCart } from './CartContext'
 
 interface AddToCartProps {
   product: Product
-}
-
-function getImageUrl(product: Product): string | null {
-  const first = product.images?.[0]?.image
-  if (first && typeof first === 'object' && 'url' in first) {
-    return first.url ?? null
-  }
-  return null
 }
 
 export function AddToCart({ product }: AddToCartProps) {
@@ -35,7 +28,7 @@ export function AddToCart({ product }: AddToCartProps) {
     slug: product.slug,
     name: product.name,
     price: product.price,
-    imageUrl: getImageUrl(product),
+    imageUrl: getProductImageUrl(product, 'thumbnail'),
   }
 
   const handleAddToCart = () => {

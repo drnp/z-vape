@@ -3,24 +3,21 @@
 import React, { useState } from 'react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Product } from '@/payload-types'
+import { getMediaUrl } from '@/lib/media'
 
 interface ProductGalleryProps {
   product: Product
 }
 
-function getImageUrls(product: Product): string[] {
+function getImageUrls(product: Product, size: 'gallery' | 'thumbnail' | null = null): string[] {
   return product.images
-    .map((img) => {
-      if (img.image && typeof img.image === 'object' && 'url' in img.image) {
-        return img.image.url ?? null
-      }
-      return null
-    })
-    .filter((url): url is string => url !== null)
+    .map((row) => getMediaUrl(row.image as never, size))
+    .filter((url): url is string => Boolean(url))
 }
 
 export function ProductGallery({ product }: ProductGalleryProps) {
-  const images = getImageUrls(product)
+  const images = getImageUrls(product, 'gallery')
+  const thumbUrls = getImageUrls(product, 'thumbnail')
   const [activeIndex, setActiveIndex] = useState(0)
 
   const hasImages = images.length > 0
@@ -73,7 +70,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
           </button>
 
           <div className="flex gap-2 overflow-x-auto flex-1 justify-center">
-            {images.map((url, i) => (
+            {thumbUrls.map((url, i) => (
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}

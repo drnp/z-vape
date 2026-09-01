@@ -3,18 +3,11 @@ import { redirect } from 'next/navigation'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getCurrentUser } from '@/lib/auth'
+import { getProductImageUrl } from '@/lib/media'
 import { CheckoutForm } from './CheckoutForm'
 
 interface PageProps {
   searchParams: Promise<{ buy_now?: string; qty?: string }>
-}
-
-function getImageUrl(product: { images?: { image?: string | { url?: string | null } | null }[] | null }): string | null {
-  const first = product.images?.[0]?.image
-  if (first && typeof first === 'object' && 'url' in first) {
-    return first.url ?? null
-  }
-  return null
 }
 
 export const dynamic = 'force-dynamic'
@@ -50,7 +43,7 @@ export default async function CheckoutPage({ searchParams }: PageProps) {
           name: product.name,
           price: product.price,
           quantity: Math.min(requestedQty, stock),
-          imageUrl: getImageUrl(product),
+          imageUrl: getProductImageUrl(product as never, 'thumbnail'),
         }
       } else {
         redirect('/products')

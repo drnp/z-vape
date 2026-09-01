@@ -33,11 +33,20 @@ export const Products: CollectionConfig = {
       type: 'array',
       required: true,
       minRows: 1,
+      maxRows: 10,
+      labels: {
+        singular: 'Image',
+        plural: 'Images',
+      },
+      admin: {
+        description: 'First image is the cover (used in cards/cart/checkout). Drag to reorder. Max 10.',
+      },
       fields: [
         {
           name: 'image',
           type: 'upload',
           relationTo: 'media',
+          required: true,
         },
       ],
     },
