@@ -2,14 +2,17 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Product } from '@/payload-types'
-import { getProductImageUrl } from '@/lib/media'
+import { getProductImageDims, getProductImageUrl } from '@/lib/media'
 import { useCart } from './CartContext'
 
 export interface BrandGroup {
   slug: string
   brandName: string
   logoUrl: string | null
+  logoWidth: number
+  logoHeight: number
   products: Product[]
 }
 
@@ -17,10 +20,11 @@ interface HotBlocksProps {
   brandGroups: BrandGroup[]
 }
 
-const BRAND_LOGO_FALLBACKS: Record<string, string> = {
-  alibarbar: '/logo/alibarbar-gold.png',
-  snowplus: '/logo/snowplus-gold.png',
-  iget: '/logo/iget-gold.png',
+const BRAND_LOGO_FALLBACKS: Record<string, { url: string; width: number; height: number }> = {
+  alibarbar: { url: '/logo/alibarbar-gold.png', width: 343, height: 80 },
+  snowplus: { url: '/logo/snowplus-gold.png', width: 252, height: 60 },
+  // IGET 已停用（恢复时取消注释）
+  // iget: { url: '/logo/iget-gold.png', width: 238, height: 50 },
 }
 
 function HotProductCard({ product }: { product: Product }) {
@@ -29,6 +33,7 @@ function HotProductCard({ product }: { product: Product }) {
   const { addItem } = useCart()
 
   const imageUrl = getProductImageUrl(product, 'card')
+  const imageDims = getProductImageDims(product, 'card') ?? { width: 600, height: 600 }
 
   const handleAddToCart = () => {
     addItem(
@@ -39,7 +44,7 @@ function HotProductCard({ product }: { product: Product }) {
         price: product.price,
         imageUrl,
       },
-      count
+      count,
     )
     setAdded(true)
     setTimeout(() => setAdded(false), 1500)
@@ -49,12 +54,16 @@ function HotProductCard({ product }: { product: Product }) {
   return (
     <div className="bg-bg-surface">
       <Link href={`/products/${product.slug}`}>
-        <div
-          className="relative aspect-square overflow-hidden justify-center items-center flex cursor-pointer"
-          style={{ background: 'linear-gradient(135deg, #2d1b69, #c0392b, #d4a017)' }}
-        >
+        <div className="relative aspect-square overflow-hidden justify-center items-center flex cursor-pointer bg-bg-card">
           {imageUrl ? (
-            <img src={imageUrl} alt={product.name} className="h-50 object-cover hover:scale-105 transition-transform duration-500" />
+            <Image
+              src={imageUrl}
+              alt={product.name}
+              width={imageDims.width}
+              height={imageDims.height}
+              sizes="(max-width: 768px) 50vw, 25vw"
+              className="h-50 w-auto object-cover hover:scale-105 transition-transform duration-500"
+            />
           ) : null}
         </div>
       </Link>
@@ -69,7 +78,7 @@ function HotProductCard({ product }: { product: Product }) {
         </Link>
         <p className="text-white text-sm mt-0.5 min-h-8">{product.flavour ?? ''}</p>
         <div className="flex items-center gap-1.5 md:gap-2 mt-2 w-full h-10">
-          <div className="flex items-center border border-gold rounded-full flex-shrink-0">
+          <div className="flex items-center border border-gold rounded-full shrink-0">
             <button
               onClick={() => setCount((c) => Math.max(1, c - 1))}
               className="w-6 h-6 flex items-center justify-center text-gold text-sm hover:opacity-70 transition-opacity"
@@ -102,16 +111,21 @@ export function HotBlocks({ brandGroups }: HotBlocksProps) {
     <div className="section-padding xl:px-10! py-12 md:py-16">
       <div className="flex flex-col gap-8 md:gap-12">
         {brandGroups.map((group) => {
-          const logoSrc =
-            group.logoUrl ?? BRAND_LOGO_FALLBACKS[group.slug] ?? '/logo/alibarbar-gold.png'
+          const fallback = BRAND_LOGO_FALLBACKS[group.slug] ?? BRAND_LOGO_FALLBACKS.alibarbar
+          const logoSrc = group.logoUrl ?? fallback.url
+          const logoWidth = group.logoUrl ? group.logoWidth : fallback.width
+          const logoHeight = group.logoUrl ? group.logoHeight : fallback.height
 
           return (
             <div key={group.slug} className="bg-bg-card rounded-lg overflow-hidden">
               <div className="flex justify-center items-center" style={{ height: 200 }}>
-                <img
+                <Image
                   src={logoSrc}
                   alt={group.brandName}
-                  className="h-14 md:h-16 object-contain"
+                  width={logoWidth}
+                  height={logoHeight}
+                  sizes="(max-width: 768px) 200px, 300px"
+                  className="h-14 md:h-16 w-auto object-contain"
                 />
               </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-3 p-3 md:p-4">

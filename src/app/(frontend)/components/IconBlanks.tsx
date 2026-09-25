@@ -1,10 +1,11 @@
 import React from 'react'
+import Image from 'next/image'
 
 const iconRow1 = [
-  { src: '/icon/genuine.png', label: '100% Genuine' },
-  { src: '/icon/dispatch.png', label: 'Quick Dispatch' },
-  { src: '/icon/delivery.png', label: 'Delivery Service' },
-  { src: '/icon/secure.png', label: 'Secure Payment' },
+  { src: '/icon/genuine.png', label: '100% Genuine', width: 500, height: 439 },
+  { src: '/icon/dispatch.png', label: 'Quick Dispatch', width: 500, height: 369 },
+  { src: '/icon/delivery.png', label: 'Delivery Service', width: 500, height: 454 },
+  { src: '/icon/secure.png', label: 'Secure Payment', width: 500, height: 522 },
 ]
 
 const socialIcons = [
@@ -32,10 +33,17 @@ export function IconBlanks() {
       <div className="section-padding xl:px-10! h-auto flex items-center justify-center py-8 md:py-10">
         {/* Layer 1 */}
         <div className="w-full grid grid-cols-2 gap-x-6 gap-y-10 md:flex md:justify-center md:gap-20 md:gap-32">
-          {iconRow1.map(({ src, label }) => (
+          {iconRow1.map(({ src, label, width, height }) => (
             <div key={label} className="flex flex-col items-center gap-3">
               <div className="w-full md:w-24 h-16 md:h-24 flex items-center justify-center">
-                <img src={src} alt={label} className="max-h-full max-w-full object-contain" />
+                <Image
+                  src={src}
+                  alt={label}
+                  width={width}
+                  height={height}
+                  sizes="96px"
+                  className="h-auto w-auto max-h-full max-w-full object-contain"
+                />
               </div>
               <div className="min-h-8 flex items-center">
                 <span className="text-gold text-sm md:text-xl font-medium text-center md:whitespace-nowrap">

@@ -8,7 +8,9 @@
 ## 1. 项目定位
 
 ### 1.1 愿景
-打造面向澳洲成年用户的**高端电子烟品牌集合站**，以 IGET / Alibarbar / Snowplus Cash 为核心品牌，提供正品保障、快速履约与合规的年龄校验体验。
+打造面向澳洲成年用户的**高端电子烟品牌集合站**，以 Alibarbar / Snowplus Cash 为核心品牌，提供正品保障、快速履约与合规的年龄校验体验。
+
+> **IGET 已停用**（2026-09-25）：首页与全站导航中的 IGET 内容已通过注释方式停用，静态资源与 `brands/products` 数据均保留，可随时恢复。
 
 ### 1.2 价值主张
 - **正品保障**：仅上架 `status=active` 商品，支持 `compareAtPrice` 划线价与 `newArrival/featured` 运营位。
@@ -37,7 +39,8 @@
 ## 3. 品牌与商品策略
 
 ### 3.1 品牌
-- 三大主品牌：**Alibarbar / Snowplus / IGET**（`src/app/(frontend)/main/page.tsx:11` `BRAND_SLUGS`）
+- 当前主品牌：**Alibarbar / Snowplus**（`src/app/(frontend)/main/page.tsx:12` `BRAND_SLUGS`）
+- **IGET 已停用**：`BRAND_SLUGS` 中 `'iget'`、`BrandBlocks` 品牌卡、`HotBlocks` logo fallback、`Header/Footer` 导航均已注释保留（恢复时取消注释即可）；`products/page.tsx` 品牌筛选 tab 与 `/brands/iget` 动态路由保留。
 - 品牌实体 `brands` 含 `logo / bannerImage / sortOrder`，首页 `HotBlocks` 按品牌分组展示精选商品。
 
 ### 3.2 商品
@@ -74,7 +77,7 @@
 ## 5. 核心用户旅程
 
 ### 5.1 浏览与发现
-1. 进入 `/` 依次看到 `BannerSection`（全宽 Banner）→ `BrandBlocks`（品牌入口）→ `HotBlocks`（三品牌各至多 4 款精选）→ `IconBlanks`（信任背书）。
+1. 进入 `/` 依次看到 `BannerSection`（全宽 Banner）→ `BrandBlocks`（品牌入口，Alibarbar / Snowplus）→ `HotBlocks`（各品牌至多 4 款精选）→ `IconBlanks`（信任背书）。
 2. 点击品牌进入 `/brands/[slug]`，或点击商品进入 `/products/[slug]`。
 
 ### 5.2 加购与购物车
@@ -147,7 +150,7 @@
 ## 9. 设计与体验
 
 - **视觉**：深蓝底 `#000019` + 金色 `#daa34a` 体系（`globals.css:3-26`），`Playfair Display` 标题 + `Inter` 正文，`section-padding` 响应式容器（`globals.css:82-103`）。
-- **导航**：`Header.tsx:11` 固定导航 `Home / Alibarbar / iGet / SnowPlus / Verification / Support / Contact`，吸顶 + 金色促销条（可关闭）。
+- **导航**：`Header.tsx:11` 固定导航 `Home / Alibarbar / SnowPlus / Verification / Support / Contact`（`iGet` 项已注释停用），吸顶 + 金色促销条（可关闭）。
 - **空状态**：购物车与结算空态均提供 `Continue Shopping → /products`。
 
 ---

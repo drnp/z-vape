@@ -6,7 +6,7 @@
 
 ## 1. 项目速览
 
-- **定位**：澳洲电子烟独立站 `z-vape.com`，品牌集合（IGET / Alibarbar / Snowplus Cash）
+- **定位**：澳洲电子烟独立站 `z-vape.com`，品牌集合（~~IGET~~ 已停用 / Alibarbar / Snowplus Cash）
 - **栈**：Next.js 16 + React 19 + Payload CMS 3.88 + PostgreSQL（`idType: uuid`）+ Tailwind 4 + sharp
 - **包管理**：`pnpm@11.3.0`，Node `^18.20.2 || >=20.9.0`
 - **输出**：`next.config.ts:9` `output: 'standalone'`，Docker 多段构建
@@ -103,6 +103,9 @@ pnpm test:e2e          # playwright (tests/e2e)
 - 支付留空，后续接入第三方时需补充幂等、回调与状态机（`docs/prd.md §7.4`）。
 - 冗余前端组件（`BrandShowcase/CategoryCards/HeroBanner` 等）待清理。
 - 库存扣减无事务，搜索按钮为占位。
+- **图片统一走 `next/image`**（2026-09-25）：`src/app/(frontend)` 已无裸 `<img>`；新增图片路径必须先在 `next.config.ts` `images.localPatterns` 登记，否则 dev 下渲染期直接抛错。从 `localStorage` 读出的图片 URL 需过 `isOptimizableImageSrc` 守卫（见 `docs/code.md §6.4`）。
+- `.prettierrc.json` 与仓库实际风格不一致（`trailingComma`），`prettier --check` 在 HEAD 上即有 22 个文件不通过，勿将其当作门禁全量执行。
+- **IGET 已停用**（2026-09-25）：首页 `BRAND_SLUGS`、`BrandBlocks` 品牌卡、`HotBlocks` logo fallback、`Header/Footer` 导航与 `layout.tsx` SEO 描述中的 IGET 内容均以**注释**方式停用，未删除；`public/logo/iget-*`、`public/assets/brand-iget*` 图片与 `brands/products` 数据保留。恢复时取消注释即可。`products/page.tsx` 品牌筛选 tab 与 `/brands/iget` 路由未做屏蔽。
 
 ---
 

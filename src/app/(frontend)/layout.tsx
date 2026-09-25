@@ -25,8 +25,10 @@ const playfair = Playfair_Display({
 
 export const metadata: Metadata = {
   title: 'Z-VAPE | Premium Vaping Products Australia',
+  // IGET 已停用，原描述保留备恢复：
+  // "Discover Australia's finest collection of premium vape products from IGET, Alibarbar, Snowplus Cash and more. Fast shipping, 100% authentic.",
   description:
-    "Discover Australia's finest collection of premium vape products from IGET, Alibarbar, Snowplus Cash and more. Fast shipping, 100% authentic.",
+    "Discover Australia's finest collection of premium vape products from Alibarbar, Snowplus Cash and more. Fast shipping, 100% authentic.",
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

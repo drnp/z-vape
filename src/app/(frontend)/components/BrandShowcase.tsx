@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Brand } from '@/payload-types'
 
 interface BrandShowcaseProps {
@@ -28,10 +29,12 @@ export function BrandShowcase({ brands }: BrandShowcaseProps) {
               {brand.bannerImage &&
               typeof brand.bannerImage === 'object' &&
               brand.bannerImage.url ? (
-                <img
+                <Image
                   src={brand.bannerImage.url}
                   alt={brand.name}
-                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-800 ease-out"
+                  fill
+                  sizes="(max-width: 640px) 100vw, 33vw"
+                  className="object-cover group-hover:scale-[1.03] transition-transform duration-800 ease-out"
                 />
               ) : (
                 <div className="absolute inset-0 bg-bg" />

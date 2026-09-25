@@ -107,7 +107,7 @@ export function AuthForm({ mode }: { mode: Mode }) {
           <button
             type="submit"
             disabled={loading}
-            className="inline-flex items-center justify-center h-12 rounded-full text-sm font-semibold tracking-[0.1em] uppercase text-white hover:opacity-80 disabled:opacity-50 transition-opacity"
+            className="inline-flex items-center justify-center h-12 rounded-full text-sm font-semibold tracking-widest uppercase text-white hover:opacity-80 disabled:opacity-50 transition-opacity"
             style={{ background: '#daa34a' }}
           >
             {loading

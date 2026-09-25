@@ -11,7 +11,8 @@ import { logoutAction } from '../actions/auth'
 const navItems = [
   { href: '/', label: 'Home' },
   { href: '/brands/alibarbar', label: 'Alibarbar' },
-  { href: '/brands/iget', label: 'iGet' },
+  // IGET 已停用（恢复时取消注释）
+  // { href: '/brands/iget', label: 'iGet' },
   { href: '/brands/snowplus', label: 'SnowPlus' },
   { href: '/verification', label: 'Verification' },
   { href: '/support', label: 'Support' },

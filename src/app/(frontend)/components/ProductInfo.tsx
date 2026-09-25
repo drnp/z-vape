@@ -105,7 +105,7 @@ export function ProductInfo({ product }: ProductInfoProps) {
       )}
 
       {product.sku && (
-        <p className="text-text-muted text-xs tracking-[0.05em]">
+        <p className="text-text-muted text-xs tracking-wider">
           SKU: {product.sku}
         </p>
       )}

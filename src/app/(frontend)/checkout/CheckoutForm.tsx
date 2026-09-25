@@ -2,10 +2,12 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { ChevronRight, Lock, ShoppingBag } from 'lucide-react'
 import { useCart } from '../components/CartContext'
 import { computeShipping, FREE_SHIPPING_THRESHOLD } from '@/lib/shipping'
+import { isOptimizableImageSrc } from '@/lib/media'
 import { createOrderAction } from '../actions/orders'
 
 interface CheckoutLine {
@@ -69,7 +71,7 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
         </p>
         <Link
           href="/products"
-          className="inline-flex items-center justify-center gap-2 h-[48px] px-8 rounded-full text-sm font-semibold tracking-[0.1em] uppercase text-black hover:opacity-80 transition-opacity"
+          className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-sm font-semibold tracking-widest uppercase text-black hover:opacity-80 transition-opacity"
           style={{ background: '#daa34a' }}
         >
           Continue Shopping
@@ -137,7 +139,10 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
 
       <h1 className="font-heading text-3xl md:text-4xl mb-8">Checkout</h1>
 
-      <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 lg:gap-12 items-start">
+      <form
+        onSubmit={handleSubmit}
+        className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-8 lg:gap-12 items-start"
+      >
         <div className="flex flex-col gap-8">
           <section>
             <h2 className="font-heading text-xl mb-5">Shipping Address</h2>
@@ -146,43 +151,75 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   Full Name
                 </label>
-                <input value={name} onChange={(e) => setName(e.target.value)} className={inputClass} required />
+                <input
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className={inputClass}
+                  required
+                />
               </div>
               <div>
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   Phone
                 </label>
-                <input value={phone} onChange={(e) => setPhone(e.target.value)} className={inputClass} />
+                <input
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className={inputClass}
+                />
               </div>
               <div>
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   Postcode
                 </label>
-                <input value={postcode} onChange={(e) => setPostcode(e.target.value)} className={inputClass} required />
+                <input
+                  value={postcode}
+                  onChange={(e) => setPostcode(e.target.value)}
+                  className={inputClass}
+                  required
+                />
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   Address Line 1
                 </label>
-                <input value={line1} onChange={(e) => setLine1(e.target.value)} className={inputClass} required />
+                <input
+                  value={line1}
+                  onChange={(e) => setLine1(e.target.value)}
+                  className={inputClass}
+                  required
+                />
               </div>
               <div className="sm:col-span-2">
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   Address Line 2
                 </label>
-                <input value={line2} onChange={(e) => setLine2(e.target.value)} className={inputClass} />
+                <input
+                  value={line2}
+                  onChange={(e) => setLine2(e.target.value)}
+                  className={inputClass}
+                />
               </div>
               <div>
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   City
                 </label>
-                <input value={city} onChange={(e) => setCity(e.target.value)} className={inputClass} required />
+                <input
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className={inputClass}
+                  required
+                />
               </div>
               <div>
                 <label className="block text-text-secondary text-xs tracking-[0.15em] uppercase mb-2">
                   State
                 </label>
-                <select value={state} onChange={(e) => setState(e.target.value)} className={inputClass}>
+                <select
+                  value={state}
+                  onChange={(e) => setState(e.target.value)}
+                  className={inputClass}
+                >
                   <option value="">Select state</option>
                   {AU_STATES.map((s) => (
                     <option key={s} value={s} className="bg-bg-surface">
@@ -211,8 +248,8 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
 
           <p className="text-text-muted text-xs flex items-center gap-2">
             <Lock size={12} />
-            Payment is confirmed offline. Your order will be created and our team will contact you to
-            arrange payment.
+            Payment is confirmed offline. Your order will be created and our team will contact you
+            to arrange payment.
           </p>
         </div>
 
@@ -224,7 +261,15 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
               <div key={l.productId} className="flex gap-3">
                 <div className="shrink-0 w-14 h-14 bg-bg border border-border overflow-hidden flex items-center justify-center">
                   {l.imageUrl ? (
-                    <img src={l.imageUrl} alt={l.name} className="h-full w-full object-cover" />
+                    <Image
+                      src={l.imageUrl}
+                      alt={l.name}
+                      width={56}
+                      height={56}
+                      sizes="56px"
+                      unoptimized={!isOptimizableImageSrc(l.imageUrl)}
+                      className="h-full w-full object-cover"
+                    />
                   ) : (
                     <ShoppingBag size={16} className="text-text-muted" />
                   )}
@@ -271,7 +316,7 @@ export function CheckoutForm({ buyNowItem, prefill }: CheckoutFormProps) {
           <button
             type="submit"
             disabled={submitting}
-            className="inline-flex items-center justify-center gap-2 h-[56px] rounded-full text-sm font-semibold tracking-[0.1em] uppercase text-white hover:opacity-80 disabled:opacity-50 transition-opacity"
+            className="inline-flex items-center justify-center gap-2 h-14 rounded-full text-sm font-semibold tracking-widest uppercase text-white hover:opacity-80 disabled:opacity-50 transition-opacity"
             style={{ background: '#daa34a' }}
           >
             {submitting ? 'Placing order…' : 'Confirm Payment'}

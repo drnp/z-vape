@@ -20,7 +20,9 @@ export function Footer() {
         <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 md:gap-x-6 md:gap-y-0 text-gold text-xs md:text-sm tracking-wider uppercase">
           <Link href="/">Home</Link>
           <Link href="/brands/alibarbar">Alibarbar</Link>
+          {/* IGET 已停用（恢复时取消注释）
           <Link href="/brands/iget">iGet</Link>
+          */}
           <Link href="/brands/snowplus">SnowPlus</Link>
           <Link href="/verification">Verification</Link>
           <Link href="/support">Support</Link>

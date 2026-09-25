@@ -77,7 +77,7 @@ export function AddToCart({ product }: AddToCartProps) {
         <button
           onClick={handleAddToCart}
           disabled={!inStock}
-          className={`inline-flex items-center justify-center gap-2 w-[240px] h-[60px] rounded-full text-sm font-semibold tracking-[0.1em] uppercase transition-opacity duration-300 text-white ${
+          className={`inline-flex items-center justify-center gap-2 w-60 h-15 rounded-full text-sm font-semibold tracking-widest uppercase transition-opacity duration-300 text-white ${
             added
               ? ''
               : inStock
@@ -108,7 +108,7 @@ export function AddToCart({ product }: AddToCartProps) {
         <button
           onClick={handleBuyNow}
           disabled={!inStock}
-          className={`inline-flex items-center justify-center gap-2 w-[240px] h-[60px] rounded-full text-sm font-semibold tracking-[0.1em] uppercase transition-opacity duration-300 text-white ${
+          className={`inline-flex items-center justify-center gap-2 w-60 h-15 rounded-full text-sm font-semibold tracking-widest uppercase transition-opacity duration-300 text-white ${
             inStock
               ? 'hover:opacity-80'
               : 'text-text-muted cursor-not-allowed border border-border'

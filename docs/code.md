@@ -93,7 +93,7 @@ Node 要求：`^18.20.2 || >=20.9.0`（`package.json:57`），Docker 构建使�
 `next.config.ts:1-38`
 - `withPayload(nextConfig, { devBundleServerPackages:false })`
 - `output: 'standalone'` + `outputFileTracingIncludes` 包含 `@swc/helpers`
-- `images.localPatterns: /api/media/file/**` 与 `/assets/**`
+- `images.localPatterns`: `/api/media/file/**`、`/assets/**`、`/logo/**`、`/icon/**`（后两者为 `<img>` → `next/image` 迁移时补入，缺则 dev 下渲染期抛 `E426`）
 - `webpack.resolve.extensionAlias` 兼容 `.cjs/.js/.mjs` → `.ts` 解析，`turbopack.root` 指向项目根
 
 ### 3.3 设计令牌
@@ -228,15 +228,16 @@ group: Content
 ## 6. 前端架构
 
 ### 6.1 路由与数据获取
-- **RSC 优先**：`layout.tsx:32`、`main/page.tsx:22`、`products/page.tsx:22`、`brands/[slug]/page.tsx:43`、`checkout/page.tsx:22` 均为 Server Components，使用 `getPayload({config})` + `payload.find/findByID`，统一 `dynamic='force-dynamic'` 禁用静态化。
-- **首页聚合**：`main/page.tsx:31-46` 并行查询 `brands where slug in BRAND_SLUGS`，再 `Promise.all` 每品牌取 `featured && active` 最多 4 款，组装 `BrandGroup[]` 供 `HotBlocks` 渲染。
+- **RSC 优先**：`layout.tsx:34`、`main/page.tsx:23`、`products/page.tsx:22`、`brands/[slug]/page.tsx:43`、`checkout/page.tsx:22` 均为 Server Components，使用 `getPayload({config})` + `payload.find/findByID`，统一 `dynamic='force-dynamic'` 禁用静态化。
+- **首页聚合**：`main/page.tsx:32-47` 并行查询 `brands where slug in BRAND_SLUGS`，再 `Promise.all` 每品牌取 `featured && active` 最多 4 款，组装 `BrandGroup[]` 供 `HotBlocks` 渲染。
+- **IGET 已停用（注释保留）**：`main/page.tsx:12` `BRAND_SLUGS` 的 `'iget'`、`BrandBlocks.tsx:32-41` 品牌卡、`HotBlocks.tsx:24` logo fallback、`Header.tsx:14` 导航项、`Footer.tsx:23-25` 链接、`layout.tsx:28-31` SEO 描述均以注释停用；`BrandBlocks.tsx:101` 容器补 `md:justify-center` 使 2 卡居中。产品列表品牌筛选 tab 与 `/brands/iget` 路由未屏蔽。
 - **SEO**：`products/[slug]/page.tsx:18` 与 `brands/[slug]/page.tsx:23` 提供 `generateMetadata`。
 
 ### 6.2 客户端边界
 | 组件 | 类型 | 作用 |
 |------|------|------|
 | `CartContext.tsx:71` | client | `useSyncExternalStore` + `localStorage('z-vape-cart')` 购物车状态 |
-| `Header.tsx:47` | client | 导航、促销条开关、`totalItems` 徽标、登录态/登出 |
+| `Header.tsx:48` | client | 导航、促销条开关、`totalItems` 徽标、登录态/登出 |
 | `AgeGate.tsx:34` | client | `useSyncExternalStore` + `localStorage('z-vape-age-verified')` 拦截 |
 | `cart/page.tsx:8` | client | 购物车页交互 |
 | `CheckoutForm.tsx:37` | client | 地址表单、18+ 勾选、调用 `createOrderAction` |
@@ -245,9 +246,29 @@ group: Content
 ### 6.3 组件清单
 `src/app/(frontend)/components/` 包含：`Header/Footer/BannerSection/BannerCarousel/BrandBlocks/BrandShowcase/HotBlocks/IconBlanks/ValueProps/BrandStory/HeroBanner/CategoryCards/FeaturedProducts/ProductCard/ProductGrid/ProductGallery/ProductInfo/AddToCart/MobileBottomBar/AgeGate/CartContext/AuthForm`。其中 `BrandBlocks/HotBlocks/IconBlanks` 为首页实际使用；`BrandShowcase/CategoryCards/HeroBanner` 等为历史/冗余，需清理或归档。
 
-### 6.4 样式与字体
+### 6.4 图片（`next/image`）
+- `src/app/(frontend)` 内 `<img>` 已全部迁移为 `next/image`，ESLint `@next/next/no-img-element` 与 `no-unused-vars` 归零。
+- **尺寸来源**：`src/lib/media.ts` `getMediaDims` / `getProductImageDims` 与 `getMediaUrl` 走**完全相同的 size → fallback 顺序**（`sizes[size].url` → `media.url`），保证声明的 `width/height` 对应实际渲染的文件；`sizes[size].url` 存在却缺 `width` 时返回 `null` 而非退回原图尺寸（避免比例错配）。
+- **容器适配**：`aspect-square`/`aspect-3/4` 容器用 `fill` + `sizes`（`ProductCard`、`ProductGallery`、`BrandShowcase`）；固定小图给显式 `width/height` 由 `h-full w-auto` 覆盖（`cart`、`checkout`、`order`、缩略图）；静态 logo/icon 尺寸硬编码在 block 数据里（`BrandBlocks`、`IconBlanks`、`HotBlocks` fallback）。**logo 类图必须带 `w-auto`**，否则 `width` 属性会锁死宽度导致变形。
+- **不可信 src 守卫**：购物车 `imageUrl` 持久化于 `localStorage`，可能残留历史路径。`isOptimizableImageSrc` 非白名单时降级 `unoptimized`——`unoptimized` 分支在调用 loader 前返回，从而绕过 `localPatterns` 校验，避免 dev 下整页抛错。用例 `tests/int/guard.int.spec.ts`。
+- `BannerSection` 为首页 LCP，带 `priority`。
+
+### 6.5 样式与字体
 - `layout.tsx:14-24` 注入 `Inter`（`--font-body`）与 `Playfair_Display`（`--font-heading`）。
 - `Header` 金色导航激活态 `text-gold font-bold + bottom border`，`Footer` 居中品牌 + 金色导航 + 客服信息。
+
+### 6.6 Tailwind 类写法约定
+- **优先写规范类**：`tailwindcss-intellisense` 的 `suggestCanonicalClasses` 规则会对「可用规范类表达的任意值」报警告级提示。
+- 判定依据是 `theme.css` 的 `--spacing: 0.25rem`（= 4px）。换算：`值px ÷ 4 = 间距刻度`。
+  ```
+  h-[48px]→h-12    h-[56px]→h-14    h-[60px]→h-15    w-[240px]→w-60
+  md:left-[30px]→md:left-7.5    md:top-[190px]→md:top-47.5
+  md:right-[40px]→md:right-10   md:top-[80px]→md:top-20   md:top-[100px]→md:top-25
+  tracking-[0.1em]→tracking-widest    tracking-[0.05em]→tracking-wider
+  flex-shrink-0→shrink-0
+  ```
+- **无规范值的保留任意值**（不受该规则影响）：`text-[10px]/[11px]/[9px]`、`tracking-[0.15em]` 及以上等。
+- 权威校验方式（勿手算）：`__unstable__loadDesignSystem(...).canonicalizeCandidates(list, {rem:16})`。
 
 ---
 
@@ -316,7 +337,7 @@ pnpm start
 - **单元/集成**：`vitest.config.mts:10` `include: ['tests/int/**/*.int.spec.ts']`，`jsdom` + `@vitejs/plugin-react` + `vite-tsconfig-paths`。
 - **E2E**：`playwright.config.ts:13` `testDir: ./tests/e2e`，单项目 `chromium`，`webServer: pnpm dev` 复用。
 - **Lint**：`eslint.config.mjs` + `eslint-config-next`，`pnpm lint`。
-- **现状**：`tests/` 目录结构存在但用例覆盖待补充；`src/migrations/` 为空。
+- **现状**：`tests/int/` 覆盖 `api` / `sanitizeMediaFilename` / `guard`（共 9 用例）；`tests/e2e/` 用例存在但本地缺 Playwright 浏览器二进制（`chromium-1208` vs 已装 `1234`），需 `pnpm exec playwright install`。`src/migrations/` 为空。
 
 ---
 
@@ -328,9 +349,10 @@ pnpm start
 | `docker-compose.yml` 仍为 mongo 模板 | 新人本地启动困惑 | 取消 postgres 注释，统一为 postgres 示例 |
 | `Categories` 缺失与文档不一致 | 运营理解偏差 | 本文档已标注，PRD 决策是否恢复或以标签替代 |
 | 冗余组件（BrandShowcase/CategoryCards/HeroBanner 等） | 维护成本 | 清理或移至 `components/_deprecated/` |
-| 搜索按钮未接线 | 体验缺口 | `Header.tsx:126` 搜索仅为占位，需接入 `/products?q=` |
+| 搜索按钮未接线 | 体验缺口 | `Header.tsx:127` 搜索仅为占位，需接入 `/products?q=` |
 | 支付留空 | 无法闭环收款 | 后续接入第三方，补充幂等、回调、退款状态机 |
 | `z-vape.md` 历史稿 | 信息过时 | 已标记 Deprecated，以 `docs/prd.md`/`code.md` 为准 |
+| IGET 已停用（注释保留） | 后续可能恢复 | 取消 6 处注释即可恢复：`main/page.tsx:12` / `BrandBlocks.tsx:32-41` / `HotBlocks.tsx:24` / `Header.tsx:14` / `Footer.tsx:23-25` / `layout.tsx:28-31`；图片与数据未删 |
 
 ---
 
@@ -351,4 +373,6 @@ pnpm test:e2e      # playwright
 
 ## 12. 变更记录
 
+- 2026-09-25：清理 `suggestCanonicalClasses` 类 VS Code hint —— 37 处任意值改为等价规范类（10 个文件），涉及 14 种替换；逐组编译 CSS 验证计算值完全等价（`--spacing:0.25rem`=4px）。规则见 `§6.6`。
+- 2026-09-25：`src/app/(frontend)` 完成 `<img>` → `next/image` 迁移（17 条 lint warning 归零），`next.config.ts` 补 `/logo/**`、`/icon/**`；`src/lib/media.ts` 新增 `getMediaDims`/`getProductImageDims`/`isOptimizableImageSrc`；新增 `tests/int/guard.int.spec.ts`。
 - 2026-09-01：初版，基于 `payload.config.ts`、`payload-types.ts`、`src/collections/*`、`src/app/(frontend)/*` 实测整理；`z-vape.md` 标记 Deprecated。

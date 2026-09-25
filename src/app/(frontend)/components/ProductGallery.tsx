@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import type { Product } from '@/payload-types'
 import { getMediaUrl } from '@/lib/media'
@@ -30,10 +31,12 @@ export function ProductGallery({ product }: ProductGalleryProps) {
     <div className="flex flex-col gap-3">
       <div className="relative aspect-square overflow-hidden bg-bg-surface rounded-sm">
         {hasImages ? (
-          <img
+          <Image
             src={images[activeIndex]}
             alt={`${product.name} - Image ${activeIndex + 1}`}
-            className="w-full h-full object-cover transition-opacity duration-300"
+            fill
+            sizes="(max-width: 1024px) 100vw, 50vw"
+            className="object-cover transition-opacity duration-300"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-text-muted">
@@ -63,7 +66,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
         <div className="flex items-center gap-2">
           <button
             onClick={prev}
-            className="flex-shrink-0 p-1.5 text-text-muted hover:text-gold transition-colors"
+            className="shrink-0 p-1.5 text-text-muted hover:text-gold transition-colors"
             aria-label="Previous image"
           >
             <ChevronLeft size={18} />
@@ -74,15 +77,16 @@ export function ProductGallery({ product }: ProductGalleryProps) {
               <button
                 key={i}
                 onClick={() => setActiveIndex(i)}
-                className={`flex-shrink-0 w-16 h-16 rounded-sm overflow-hidden border-2 transition-all duration-200 ${
-                  i === activeIndex
-                    ? 'border-gold'
-                    : 'border-transparent hover:border-gold/50'
+                className={`shrink-0 w-16 h-16 rounded-sm overflow-hidden border-2 transition-all duration-200 ${
+                  i === activeIndex ? 'border-gold' : 'border-transparent hover:border-gold/50'
                 }`}
               >
-                <img
+                <Image
                   src={url}
                   alt={`${product.name} thumbnail ${i + 1}`}
+                  width={64}
+                  height={64}
+                  sizes="64px"
                   className="w-full h-full object-cover"
                 />
               </button>
@@ -91,7 +95,7 @@ export function ProductGallery({ product }: ProductGalleryProps) {
 
           <button
             onClick={next}
-            className="flex-shrink-0 p-1.5 text-text-muted hover:text-gold transition-colors"
+            className="shrink-0 p-1.5 text-text-muted hover:text-gold transition-colors"
             aria-label="Next image"
           >
             <ChevronRight size={18} />

@@ -19,6 +19,12 @@ const nextConfig: NextConfig = {
       {
         pathname: '/assets/**',
       },
+      {
+        pathname: '/logo/**',
+      },
+      {
+        pathname: '/icon/**',
+      },
     ],
   },
   webpack: (webpackConfig) => {

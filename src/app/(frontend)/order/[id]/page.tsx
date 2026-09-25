@@ -1,23 +1,37 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { redirect, notFound } from 'next/navigation'
 import { CheckCircle2, ChevronRight, ShoppingBag } from 'lucide-react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { getCurrentUser } from '@/lib/auth'
-import { getMediaUrl } from '@/lib/media'
+import { getMediaDims, getMediaUrl } from '@/lib/media'
 import type { Order } from '@/payload-types'
 
 interface PageProps {
   params: Promise<{ id: string }>
 }
 
-function productImageUrl(order: Order, itemIndex: number): string | null {
+function productImage(
+  order: Order,
+  itemIndex: number,
+): {
+  url: string
+  width: number
+  height: number
+} | null {
   const item = order.items?.[itemIndex]
   const product = item?.product
   if (product && typeof product === 'object') {
     const first = (product as { images?: { image?: unknown }[] }).images?.[0]?.image
-    return getMediaUrl(first as never, 'thumbnail')
+    const media = first as never
+    const url = getMediaUrl(media, 'thumbnail')
+    if (!url) return null
+    // Rendered in a fixed square with `object-cover`, so an approximate ratio is
+    // fine — never drop the image just because dims are missing from the row.
+    const dims = getMediaDims(media, 'thumbnail') ?? { width: 400, height: 400 }
+    return { url, width: dims.width, height: dims.height }
   }
   return null
 }
@@ -58,9 +72,7 @@ export default async function OrderPage({ params }: PageProps) {
   if (!order) notFound()
 
   const ownerId =
-    order.customer && typeof order.customer === 'object'
-      ? order.customer.id
-      : order.customer
+    order.customer && typeof order.customer === 'object' ? order.customer.id : order.customer
 
   const isOwner = typeof ownerId === 'string' && ownerId === user.id
   const isAdmin = Boolean(user.roles?.includes('admin'))
@@ -87,36 +99,41 @@ export default async function OrderPage({ params }: PageProps) {
             Your order has been received. Our team will contact you to confirm and arrange payment.
           </p>
           <p className="text-text-muted text-sm">
-            Order Number:{' '}
-            <span className="text-gold font-semibold">{order.orderNumber}</span>
+            Order Number: <span className="text-gold font-semibold">{order.orderNumber}</span>
           </p>
         </div>
 
         <div className="bg-bg-surface border border-border rounded-lg divide-y divide-border">
-          {order.items.map((item, i) => (
-            <div key={item.id ?? i} className="flex gap-4 p-5">
-              <div className="shrink-0 w-16 h-16 bg-bg border border-border overflow-hidden flex items-center justify-center">
-                {productImageUrl(order, i) ? (
-                  <img
-                    src={productImageUrl(order, i) ?? ''}
-                    alt={productName(order, i)}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <ShoppingBag size={18} className="text-text-muted" />
-                )}
-              </div>
-              <div className="flex flex-1 items-center justify-between gap-4">
-                <div>
-                  <p className="text-text-primary text-sm font-medium">{productName(order, i)}</p>
-                  <p className="text-text-muted text-xs">Qty {item.quantity}</p>
+          {order.items.map((item, i) => {
+            const image = productImage(order, i)
+            return (
+              <div key={item.id ?? i} className="flex gap-4 p-5">
+                <div className="shrink-0 w-16 h-16 bg-bg border border-border overflow-hidden flex items-center justify-center">
+                  {image ? (
+                    <Image
+                      src={image.url}
+                      alt={productName(order, i)}
+                      width={image.width}
+                      height={image.height}
+                      sizes="64px"
+                      className="h-full w-full object-cover"
+                    />
+                  ) : (
+                    <ShoppingBag size={18} className="text-text-muted" />
+                  )}
                 </div>
-                <span className="text-text-primary text-sm tabular-nums">
-                  ${(item.unitPrice * item.quantity).toFixed(2)}
-                </span>
+                <div className="flex flex-1 items-center justify-between gap-4">
+                  <div>
+                    <p className="text-text-primary text-sm font-medium">{productName(order, i)}</p>
+                    <p className="text-text-muted text-xs">Qty {item.quantity}</p>
+                  </div>
+                  <span className="text-text-primary text-sm tabular-nums">
+                    ${(item.unitPrice * item.quantity).toFixed(2)}
+                  </span>
+                </div>
               </div>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
         <div className="bg-bg-surface border border-border rounded-lg p-6 mt-4 flex flex-col gap-3 text-sm">
@@ -159,7 +176,7 @@ export default async function OrderPage({ params }: PageProps) {
         <div className="flex justify-center mt-10">
           <Link
             href="/products"
-            className="inline-flex items-center justify-center gap-2 h-[48px] px-8 rounded-full text-sm font-semibold tracking-[0.1em] uppercase text-black hover:opacity-80 transition-opacity"
+            className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-sm font-semibold tracking-widest uppercase text-black hover:opacity-80 transition-opacity"
             style={{ background: '#daa34a' }}
           >
             Continue Shopping

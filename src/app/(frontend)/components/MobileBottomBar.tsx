@@ -50,7 +50,7 @@ export function MobileBottomBar({ product }: MobileBottomBarProps) {
       style={{ paddingBottom: 'max(env(safe-area-inset-bottom), 12px)' }}
     >
       <div className="flex items-center gap-2 md:gap-3">
-        <div className="flex items-center border border-border rounded-sm flex-shrink-0">
+        <div className="flex items-center border border-border rounded-sm shrink-0">
           <button
             onClick={decrement}
             disabled={!inStock || quantity <= 1}
@@ -72,14 +72,14 @@ export function MobileBottomBar({ product }: MobileBottomBarProps) {
           </button>
         </div>
 
-        <span className="text-gold font-semibold text-xs md:text-sm flex-shrink-0">
+        <span className="text-gold font-semibold text-xs md:text-sm shrink-0">
           ${(product.price * quantity).toFixed(2)}
         </span>
 
         <button
           onClick={handleAddToCart}
           disabled={!inStock}
-          className={`flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-2 md:px-4 py-3 rounded-full text-[10px] md:text-xs font-semibold tracking-[0.05em] uppercase transition-opacity duration-300 text-white ${
+          className={`flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-2 md:px-4 py-3 rounded-full text-[10px] md:text-xs font-semibold tracking-wider uppercase transition-opacity duration-300 text-white ${
             added
               ? ''
               : inStock
@@ -110,7 +110,7 @@ export function MobileBottomBar({ product }: MobileBottomBarProps) {
         <button
           onClick={handleBuyNow}
           disabled={!inStock}
-          className={`flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-2 md:px-4 py-3 rounded-full text-[10px] md:text-xs font-semibold tracking-[0.05em] uppercase transition-opacity duration-300 text-white ${
+          className={`flex-1 min-w-0 inline-flex items-center justify-center gap-1.5 px-2 md:px-4 py-3 rounded-full text-[10px] md:text-xs font-semibold tracking-wider uppercase transition-opacity duration-300 text-white ${
             inStock
               ? 'active:opacity-80'
               : 'text-text-muted border border-border'

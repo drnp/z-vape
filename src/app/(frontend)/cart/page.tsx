@@ -2,8 +2,10 @@
 
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import { ChevronRight, Minus, Plus, Trash2, ShoppingBag } from 'lucide-react'
 import { useCart } from '../components/CartContext'
+import { isOptimizableImageSrc } from '@/lib/media'
 
 export default function CartPage() {
   const { items, removeItem, updateQuantity, clearCart, totalItems, subtotal } = useCart()
@@ -18,7 +20,7 @@ export default function CartPage() {
         </p>
         <Link
           href="/products"
-          className="inline-flex items-center justify-center gap-2 h-[48px] px-8 rounded-full text-sm font-semibold tracking-[0.1em] uppercase text-black hover:opacity-80 transition-opacity"
+          className="inline-flex items-center justify-center gap-2 h-12 px-8 rounded-full text-sm font-semibold tracking-widest uppercase text-black hover:opacity-80 transition-opacity"
           style={{ background: '#daa34a' }}
         >
           Continue Shopping
@@ -48,7 +50,15 @@ export default function CartPage() {
                 className="shrink-0 w-20 h-20 md:w-24 md:h-24 bg-bg-surface border border-border overflow-hidden flex items-center justify-center"
               >
                 {item.imageUrl ? (
-                  <img src={item.imageUrl} alt={item.name} className="h-full w-full object-cover" />
+                  <Image
+                    src={item.imageUrl}
+                    alt={item.name}
+                    width={96}
+                    height={96}
+                    sizes="96px"
+                    unoptimized={!isOptimizableImageSrc(item.imageUrl)}
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <ShoppingBag size={20} className="text-text-muted" />
                 )}
@@ -130,7 +140,7 @@ export default function CartPage() {
 
           <Link
             href="/checkout"
-            className="inline-flex items-center justify-center gap-2 h-[56px] rounded-full text-sm font-semibold tracking-[0.1em] uppercase text-white hover:opacity-80 transition-opacity"
+            className="inline-flex items-center justify-center gap-2 h-14 rounded-full text-sm font-semibold tracking-widest uppercase text-white hover:opacity-80 transition-opacity"
             style={{ background: '#daa34a' }}
           >
             Proceed to Checkout
@@ -139,13 +149,13 @@ export default function CartPage() {
           <div className="flex items-center justify-between gap-3">
             <Link
               href="/products"
-              className="text-text-secondary text-xs tracking-[0.1em] uppercase hover:text-gold transition-colors"
+              className="text-text-secondary text-xs tracking-widest uppercase hover:text-gold transition-colors"
             >
               Continue Shopping
             </Link>
             <button
               onClick={clearCart}
-              className="text-text-muted text-xs tracking-[0.1em] uppercase hover:text-red-400 transition-colors"
+              className="text-text-muted text-xs tracking-widest uppercase hover:text-red-400 transition-colors"
             >
               Clear Cart
             </button>

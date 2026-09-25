@@ -8,11 +8,16 @@ import { HotBlocks, type BrandGroup } from '../components/HotBlocks'
 import { IconBlanks } from '../components/IconBlanks'
 import type { Brand, Product } from '@/payload-types'
 
-const BRAND_SLUGS = ['alibarbar', 'snowplus', 'iget']
+// IGET 已停用（首页及相关入口代码已注释，后续可恢复）
+const BRAND_SLUGS = ['alibarbar', 'snowplus' /* , 'iget' */]
 
-function getBrandLogoUrl(brand: Brand): string | null {
-  if (brand.logo && typeof brand.logo === 'object' && 'url' in brand.logo) {
-    return brand.logo.url ?? null
+function getBrandLogo(brand: Brand): { url: string; width: number; height: number } | null {
+  if (brand.logo && typeof brand.logo === 'object' && 'url' in brand.logo && brand.logo.url) {
+    return {
+      url: brand.logo.url,
+      width: brand.logo.width ?? 172,
+      height: brand.logo.height ?? 40,
+    }
   }
   return null
 }
@@ -42,18 +47,21 @@ export default async function MainPage() {
         sort: '-createdAt',
         limit: 4,
         depth: 2,
-      })
-    )
+      }),
+    ),
   )
 
   const productsMap = new Map(brands.map((b, i) => [b.slug, productsByBrand[i].docs as Product[]]))
 
   const brandGroups: BrandGroup[] = BRAND_SLUGS.map((slug) => {
     const brand = brands.find((b) => b.slug === slug)
+    const logo = brand ? getBrandLogo(brand) : null
     return {
       slug,
       brandName: brand?.name ?? slug,
-      logoUrl: brand ? getBrandLogoUrl(brand) : null,
+      logoUrl: logo?.url ?? null,
+      logoWidth: logo?.width ?? 343,
+      logoHeight: logo?.height ?? 80,
       products: brand ? (productsMap.get(slug) ?? []) : [],
     }
   })

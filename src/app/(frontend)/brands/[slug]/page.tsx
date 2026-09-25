@@ -4,6 +4,7 @@ import config from '@payload-config'
 import { notFound } from 'next/navigation'
 import { ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Metadata } from 'next'
 
 import { ProductGrid } from '@/app/(frontend)/components/ProductGrid'
@@ -13,9 +14,13 @@ interface PageProps {
   params: Promise<{ slug: string }>
 }
 
-function getBrandLogoUrl(brand: Brand): string | null {
-  if (brand.logo && typeof brand.logo === 'object' && 'url' in brand.logo) {
-    return brand.logo.url ?? null
+function getBrandLogo(brand: Brand): { url: string; width: number; height: number } | null {
+  if (brand.logo && typeof brand.logo === 'object' && 'url' in brand.logo && brand.logo.url) {
+    return {
+      url: brand.logo.url,
+      width: brand.logo.width ?? 172,
+      height: brand.logo.height ?? 40,
+    }
   }
   return null
 }
@@ -66,7 +71,7 @@ export default async function BrandPage({ params }: PageProps) {
     limit: 0,
   })
 
-  const logoUrl = getBrandLogoUrl(brand)
+  const logo = getBrandLogo(brand)
 
   return (
     <>
@@ -85,11 +90,14 @@ export default async function BrandPage({ params }: PageProps) {
       <section className="section-padding pb-8 lg:pb-16">
         <div className="flex flex-col md:flex-row md:items-end gap-6 mb-8 md:mb-12">
           <div className="flex-1">
-            {logoUrl && (
-              <img
-                src={logoUrl}
+            {logo && (
+              <Image
+                src={logo.url}
                 alt={brand.name}
-                className="h-14 md:h-16 object-contain mb-4"
+                width={logo.width}
+                height={logo.height}
+                sizes="(max-width: 768px) 160px, 240px"
+                className="mb-4 h-14 w-auto object-contain md:h-16"
               />
             )}
             <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl">{brand.name}</h1>

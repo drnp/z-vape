@@ -1,5 +1,6 @@
 import React from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import type { Product } from '@/payload-types'
 import { getProductImageUrl } from '@/lib/media'
 
@@ -16,10 +17,12 @@ export function ProductCard({ product }: { product: Product }) {
       {/* Image */}
       <div className="relative aspect-square overflow-hidden bg-bg-surface">
         {imageUrl ? (
-          <img
+          <Image
             src={imageUrl}
             alt={product.name}
-            className="w-full h-full object-cover group-hover:scale-[1.03] transition-transform duration-600 ease-out"
+            fill
+            sizes="(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover group-hover:scale-[1.03] transition-transform duration-600 ease-out"
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-text-muted">
